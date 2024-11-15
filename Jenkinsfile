@@ -9,11 +9,20 @@ pipeline {
 	}
 
 	stages {
-		stage('PackageDocker') {
+		/*stage('PackageDocker') {
 			steps {
 				bat 'mvn -B -q -P docker-build clean package'
 			}
+		}*/
+		stage('Compile'){
+			steps{
+				bat 'mvn -B -q clean compile'
+				withAnt(installation: 'ant 1.10.15'){
+					bat 'ant replace'
+				}
+			}
 		}
+		
 		stage('Deploy') {
 			when {
 				not {
